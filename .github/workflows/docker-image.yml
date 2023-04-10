@@ -37,4 +37,5 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/devops-labs-backend:${{ github.run_number }}
             docker run -d \
             -p 5000:5000 \
-            --name devops-labs-backend 
+            --name devops-labs-backend \
+            ${{ secrets.DOCKER_USERNAME }}/devops-labs-backend:${{ github.run_number }}

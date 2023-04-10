@@ -34,6 +34,7 @@ jobs:
           port: 22
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker container rm -f devops-labs-backend
             docker pull ${{ secrets.DOCKER_USERNAME }}/devops-labs-backend:${{ github.run_number }}
             docker run -d \
             -p 5000:5000 \

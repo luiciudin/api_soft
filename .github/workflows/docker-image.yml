@@ -19,7 +19,7 @@ jobs:
 
       - name: Build & push docker image
         run: |
-          docker build -f DevOps-Labs-Backend/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/devops-labs-backend:${{ github.run_number }} .
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/devops-labs-backend:${{ github.run_number }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/devops-labs-backend:${{ github.run_number }}
   deploy:
     runs-on: ubuntu-22.04
@@ -34,10 +34,7 @@ jobs:
           port: 22
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker container rm -f devops-labs-backend
+            docker pull ${{ secrets.DOCKER_USERNAME }}/devops-labs-backend:${{ github.run_number }}
             docker run -d \
-            -p 4000:4000 \
-            --network devopslabs \
-            --name devops-labs-backend \
-            --env ConnectionStrings__MySQL="Server=${{ secrets.DB_HOST }};Port=3306;User=${{ secrets.DB_USERNAME }};Password=${{ secrets.DB_PASSWORD }};Database=devops-labs" \
-            ${{ secrets.DOCKER_USERNAME }}/devops-labs-backend:${{ github.run_number }}
+            -p 5000:5000 \
+            --name devops-labs-backend 
